@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS585: Image and Video Computing</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="585a1.html">Project 1
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a2.html">Project 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a3.html">Project 3</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a4.html">Project 4</a>
+             <span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="project.html">Plate Recognition</a>
+              <span class="sr-only">(current)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p>
+ CS 585 Project <br>
+ Xiaoran Xu <br>
+ Ziyang Chen <br>
+  11/18/2018
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+License plate recognition could be used in a lot of real-world applications like traffic violations, tolls, etc. Most of the license plates has certain pattern, it will probably make the recognition easier. We only need to locate the plate, and do the recognition, but of course there is some processing of the image. A few forseen difficulties are the changing lighting conditions of each image and how we could isolate the plate from the background that might have similar colors, and also the angels of the plate could affect the result of recognition. There are some real-world corner cases to be considered and handled.
+</p>
+
+
+<hr>
+<h2> Method and Implementation </h2>
+<p> Our algorithm could be divided into 4 steps: pre-processing, plate detection, character segmentation, and character recognition. <br>
+1. Preprocessing of the image<br>
+In this step, images need to be processed to a more suitable and clearer input for the following steps.  Noise reduction and enhancing the constrast was applyed as to enhance the difference between the character and background which would be beneficial to sperate numbers from background in following steps.<br>
+2. Localization of license plates<br>
+Firstly, use the gray image and do the vertical edge detection with Sobel filter. As the edge of the characters on the plate is obvious in vertical direction, this step could help us filter out most of the inconsequential information in the image. Then the binary conversion for this image with self adapted threshold has been applied which enhanced the edge of characters and plates. Then we used Morphology to treat the image, that is dilation and erosion was implemented to connect the similar and closed area and remove the tiny isolate blobs. In this step, we expected that the blobs in the area of license plate are connected which seems like a whole part. After the Morphology treatment, we looked for the plate rectangle area with some limitations: the area of plate would be in the range of 1%-5%; it should be at the height of 40% - 90% of the image and in the range of 20%-60% width of the image.The ratio of the plate's height to its width should less than 0.5. Finally, choose the biggest blob in the leaving blos, that will be the plate area of the car. <br>
+
+3. Character segmentation<br>
+Because the plate obtained from previous step is somehow a raw plate image, we need to further process it. After binarizing the raw plate image, we perform morphology operations to find the largest black blob as this is the potential plate area. Then we perofrm another findBinaryLargeObjects to find all white blobs, which are characters and noises. We then color white blobs that are either too large or too small to be characters to be black. Then we perform vertical and horizontal projections to locate the characters and segment them. <br>
+
+4. Character recognition<br>
+After segmenting each character, we simply perform a template matching to find out the exact character. Because all pictures in our dataset are taken from the back of the car, they are rather simple for the algorithm to recognize. Firstly, in order to get a hight accuracy of character recognize, we choose 3 templates for each characters which means that the character from 'A' to 'Z' and 0 to 9 all have 3 models as the templates. Then we get rid of the redundant black border in the characer segmentation part and only compare the character area with all the templates. After template mathching, we calculate the possibility of each template and choose the highest one as the recognition result. After looping all the character in the plate, we finally output the image with red rectangule mark the area of plate and recognition result.
+</p>
+
+<p>
+<li> Preprocessing: preprocess the image in step 1.</li>
+<li> Plate_detection: step 2 function</li>
+<li> horizontal_projection: step 3 function to do horizontal projection to detect whether a white blob is a character.</li>
+<li> Plate_detection: Find contours and Template matching function</li>
+</p>
+
+
+<hr>
+<h2>Experiments</h2>
+<p>
+Our dataset contains 135 car images. We run the algorithm on all of them, and then manually check the correctness. The accuracy result is 76%.</p>
+
+
+<hr>
+<h2> Expected Result!!!!!!!!!!</h2>
+<p>
+<table>
+<tbody>
+<tr>
+</tr>
+<tr>
+  <td> common plate recognition </td>
+  <td> <img src="project/110.jpg" height="400"> </td>
+  <td> <img src="project/16.jpg" height="400"></td>
+</tr>
+<tr>
+  <td> '1' and 'I' </td>
+  <td> <img src="project/7.jpg" height="400"> </td>
+  <td> <img src="project/55.jpg" height="400"></td>
+</tr>
+<tr>
+  <td> '2' and 'Z' </td>
+  <td> <img src="project/110.jpg" height="400"> </td>
+  <td> <img src="project/49.jpg" height="400"></td>
+</tr>
+<tr>
+  <td> '8' and 'B', '0' and 'D' </td>
+  <td> <img src="project/42.jpg" height="400"> </td>
+  <td> <img src="project/58.jpg" height="400"></td>
+</tr>
+<tr>
+  <td> 'G' and '0' </td>
+  <td> <img src="project/151.jpg" height="400"> </td>
+  <td> <img src="project/10.jpg" height="400"></td>
+</tr>
+</tbody></table>
+As the image shows above, we want to mark the license plate in the image and output the recognition result on it. Even some special and similar characters are performed well than expected.
+</p>
+
+
+
+<hr>
+<h2> Discussion </h2>
+
+<p>
+Discuss your method and results:
+</p><ul>
+<li>Our method is designed specifically for the dataset chosen. For most of the images in this dataset, we could segment and recognize the character clean and clear. But because we used vertical projection for character segmentation, it certainly require each character to be vertical. If there is too much rotation for the characters, the result of the segmentation could be compromised. </li>
+<li>Our initial thought was to use neural network for character recognition, but our time is limited to self-learn that, so we decided to use template matching instead. Because template matching is relatively static, the requirement for processing the image is more strict.</li>
+</ul>
+<p></p>
+
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+In this project, the methods we used are classic and essential in the computer vision area. In order to perform an accurate result, we tried several times with different methodologies which we learned in CV course and finally choose a appropriate way to recognize the license plate. The accuracy of the recognition is 76% which is quite a good score for template matching in real world as it may be influenced by lightness, different angle and blur objects.
+</p>
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+
+<li><a href="project/paper/1.pdf"> Automated Number plate Recognition System: A. Badr, M.Abdelwahab, A. Thabet, A. Abdelsadek</a></li>
+<li><a href="project/paper/2.pdf"> Automated Number Plate Recognition System(ANPR): A Survey: C. Patel, D. Shah, A. Patel</a></li>
+<li><a href="project/paper/3.pdf"> Automated Car Number Plate Detection System to Detect Far Number Plates: A. Goyal, R. Bhatia</a></li>
+<li><a href="project/paper/4.pdf"> Automatic License Plate Recognition System Based on Color Image Processing: X. Shi, W. Zhao, Y. Shen</a></li>
+<li><a href="project/paper/5.pdf"> Survey on Automatic Number Plate Recognition(ANR): K. Sonavane, U. Majhi</a></li>
+</p>
+<hr>
+</div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>

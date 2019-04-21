@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS585: Image and Video Computing</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="585a1.html">Project 1
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a2.html">Project 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a3.html">Project 3</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="585a4.html">Project 4</a>
+             <span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">Plate Recognition</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p> 
+ CS 585 HW 4 <br>
+ Xiaoran Xu<br>
+ 10/30/2018
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+Given a set of frames of a pianist playing piano, we need to segment her hands in every frame.<br>
+For the second part, given a set of frames, we need to do multi-object tracking for bats and cells. Additionally, we also need to segment cells in order to perform the tracking.
+</p>
+
+<hr>
+<h2> Method and Implementation </h2>
+<p>
+  <li>
+    For hand segmentation, the pianist is playing in a background that's similar to skin colors. First, accumulate every frame and create an average frame to do background extraction. Because the average frame has multiple hands on it, I also make a mask for better performance. Then, compute the absolute difference between each frame and the average frame. Next, apply skin-color detection method. Finally, given my observations, I choose the left-most 2 largest blobs as hands.
+  </li>
+  <li>
+    For multi-object tracking: <br>
+    we are given a clean and neat bat segmentation, so I only need to do tracking using Alpha-Beta filter. For the tracking part, I create a class object to store the information for bats. For each frame, put all detected bats in a new list, and update the previous frame's list of bats's predicted position. Then do a GNN for each bat's predicted location and next frame's bat location. Next, update bats' alpha-beta filter. <br>
+    For cell tracking, we segment cells using adapative threshold method and label each frame. Then repeat the steps done for bat tracking.
+  </li>
+</p>
+
+<p>
+  <li> 1. vector<Bat> getAllBats(string filename, Mat &frame): convert localization files to bat objects</li>
+  <li> 2. void Bat::predict(): used to predict Bat's location in the next frame</li>
+  <li> 3. void Bat::update(Bat &next): update alpha-beta filter and match bats in two frames</li>
+
+  </li>
+</p>
+
+<hr>
+<h2>Experiments</h2>
+<p>
+Run the program and create results as videos for each task, then manually check the performance.<br>
+Out of 19 frames of the pianist, successfully detected 18 frames.<br>
+For bat and cell tracking, almost all are successfully tracked.
+</p>
+
+
+<hr>
+<h2> Results</h2>
+<p>
+<iframe width="520" height="415" src="https://www.youtube.com/embed/Ceggf6ZHFz8"></iframe>
+<iframe width="520" height="415" src="https://www.youtube.com/embed/0Wfiwu48FJ0"></iframe>
+<iframe width="520" height="415" src="https://www.youtube.com/embed/kxosFzeIZFE"></iframe>
+</p>
+
+
+<hr>
+<h2> Discussion </h2>
+
+<p> 
+Discuss your method and results:
+</p><ul>
+<li>for the hand segmentation task, I'm happy with the result. The only case of failure is the last frame, where it accidentally shows a pop-up message. Since the original frame contains a human error, and this program works well with all other more natural frames, I have decided to not to specifically optimize the program just for this one frame. </li>
+<li> The program works really well with bat tracking, given that all the segmentation are accurate, which makes the tracking more eaiser as there are no noises. The only problem is that when two objects occlude with each other, GNN could give the wrong matching. For cell tracking, because there are still too many noises after applying adaptive threshold, it's difficult to have clean and neat segmentations. This certainly would make tracking less accurate, but for those objects segmented succussfully, the tracking works well.</li>
+<li>Would still need to prove segmentation algorithm.</li> 
+</ul>
+<p></p>
+
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+Noise is a big problem for computer vision. As the real world is way more complicated than binary images, though some algorithms suggest a really smart way to deal with things like tracking, it's still hard to do the preparation. Alpha-beta does work really well with tracking and it makes more sense than filters like Kalman filter that only uses a single parameter. 
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+
+Cite any papers or other references you consulted while developing
+your solution.  Citations to papers should include the authors, the
+year of publication, the title of the work, and the publication
+information (e.g., book name and publisher; conference proceedings and
+location; journal name, volume and pages; technical report and
+institution).  
+
+</p><p>
+Material on the web should include the url and date of access.
+</p>
+
+<p>
+Credit any joint work or discussions with your classmates. 
+</p>
+<hr>
+</div>
+
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>

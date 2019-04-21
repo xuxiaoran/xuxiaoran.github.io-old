@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS640: Artifical Intelligence</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="#">Neural Network
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">News Image Classification</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Project 3</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p> 
+ CS 640 Programming assignment 1 <br>
+Xiaoran Xu <br>
+    3/5/2019
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+<li> Learn how neural networks and backpropagation algorithm work and their implementations. </li>
+<li> Learn how learning rate and L2 regularization can affect the result of trained neural networks</li>
+<li> Implement a neural network with 1 hidden layer, and also use 5 fold round robin cross validation for training and testing</li>
+</p>
+
+<hr>
+<h2> Method and Implementation </h2>
+<p>
+  <li> The model is a neural net with 1 hidden layer, and it uses backpropagation algorithm and 5-fold cross validation for training purporses.</li>
+<br>1. Split the data set into 5 mini batches, and perform 5 rounds of training. For each round, pick a distinct mini-batch as the test set and the rest as train set. 
+<br>2. In training,initialize all weights and perform forward propagation to get initial output values. Then, perform backpropagation to update the weights given epoch as the number of rounds of weight adjustment. 
+<br>3. For testing, use the test set X values as input and feed it to the trained model, get the predicted values and compare them with the test set Y values.
+<br>4. Evaluate the model by generating a confusion matrix.
+<br><img border="0" src="p1_results/backprop.PNG" style="center" height="300">
+<h3> Code Outline </h3>
+1. class LogisticRegression: This is a wrapper for a genral neural network model with backpropagation algorithm implemented.
+<br> 2. five_fold(...): takes a whole dataset, learning rate as input to train a dataset. It also takes two models, one with L2 regularizaiton and one without, so that we could precisely learn how L2 regularization could affect the result of a trained model using the same train set and test set.
+<br> 3. digit_recognition(...): This is used for the digit recognition part. In this part, we don't need 5-fold cross validation, instead, the model is trained on a whole dataset and tested using a different dataset.
+</p>
+<hr>
+<h2>Experiments</h2>
+<p>
+1. To learn the effect of L2 Regularization, I passed one model with L2 regularization and one without it to 5-fold cross validation, and have them trained and tested on the *exact* same train set and test set. Then, output the confusion matrices generated and compare the TP, TN, FP, FN rates.
+<br> 2. To learn the effect of learning rates, I tested the model with 10 different learning rates and compute their accuracies, then generate a line graph to visualize them.
+<br> 3. For the digit recognition part, I still used a confusion matrix to evaluate the trained model.
+</p>
+<hr>
+<h2> Results</h2>
+<h3><li> General 5-fold Cross Validation and with L2 Regularization</h3></li>
+<h4>Linear Data w/ learning rate=0.01</h4>
+<p>
+<table>
+<tr>
+<td></td>
+<td align="center"> Round 1 </td> 
+<td align="center"> Round 2</td> 
+<td align="center"> Round 3 </td> 
+<td align="center"> Round 4</td> 
+<td align="center"> Round 5 </td>
+</tr>
+<tr>
+  <td> Linear Data </td> 
+  <td> <img src="p1_results/5fold/linear_round1.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round3.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round4.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round5.PNG" width="300"> </td> 
+</tr> 
+<tr>
+  <td> Linear Data w/ L2</td> 
+  <td> <img src="p1_results/5fold/linear_round1_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round2_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round3_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round4_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/linear_round5_L2.PNG" width="300"> </td> 
+</tr> 
+</table>
+
+<table align="center">
+<tr>
+  <td> <img src="p1_results/5fold/confusion_linear.PNG" height="350"> </td> 
+  <td> <img src="p1_results/5fold/confusion_linear_L2.PNG" height="350"> </td> 
+</tr>
+<tr>
+<td align="center"> Linear Data w/o L2 </td> 
+<td align="center"> Linear Data w/ L2</td>
+</tr>
+</table>
+</p>
+<p>From the confusion matrices, we can see that for linear data, there is slightly an improvement. But since the accuracies are already high enough for linear data, this improvement is still meaningful.</p>
+
+<h4>Non-Linear Data w/ learning rate=0.01</h4>
+<p>
+<table>
+<tr>
+<td></td>
+<td align="center"> Round 1 </td> 
+<td align="center"> Round 2</td> 
+<td align="center"> Round 3 </td> 
+<td align="center"> Round 4</td> 
+<td align="center"> Round 5 </td>
+</tr>
+<tr>
+  <td> Non Linear Data </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round1.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round3.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round4.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round5.PNG" width="300"> </td> 
+</tr> 
+<tr>
+  <td> Non Linear Data w/ L2</td> 
+  <td> <img src="p1_results/5fold/nonLinear_round1_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round2_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round3_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round4_L2.PNG" width="300"> </td> 
+  <td> <img src="p1_results/5fold/nonLinear_round5_L2.PNG" width="300"> </td> 
+</tr> 
+</table>
+
+<table align="center">
+<tr>
+  <td> <img src="p1_results/5fold/confusion_nonLinear.PNG" height="350"> </td> 
+  <td> <img src="p1_results/5fold/confusion_nonLinear_L2.PNG" height="350"> </td> 
+</tr>
+<tr>
+<td align="center"> Non-Linear Data w/o L2 </td> 
+<td align="center"> Non-Linear Data w/ L2</td>
+</tr>
+</table>
+</p>
+<p>From the confusion matrices, we can see that for non linear data, the TP rate is high with L2 regularization. But for FP and FN rates, they both decrease. This indicates that with L2 regularization, the trained model has less overfitting. We can also observe this by looking at the boundry. It's easy to see that with L2 regularization, more blut dots are included within the decision boundry than it without L2 regularization. </p>
+
+<h3><li> Trained with Different Learning Rates </li></h3>
+<table align="center">
+<tr>
+  <td> <img src="p1_results/linear_learning.PNG" height="350"> </td> 
+  <td> <img src="p1_results/nonLinear_learning.PNG" height="350"> </td> 
+</tr>
+<tr>
+<td align="center"> Linear Data </td> 
+<td align="center"> Non-Linear Data</td>
+</tr>
+</table>
+</p>
+<p>From the Line graph, we can see that learning rates do not monotonically affect the accuracies. Epochs, the rounds of weight adjustment, also play a role in the training process. As we can easily figure out that to get the same level of accuracy, rounds of learning needed and learning rates have a reciprocal interaction.</p>
+
+<h3><li> Digit Recognition </li></h3>
+<img src="p1_results/confusion_digit.PNG" height="400"> </td>
+</p>
+<p>Digit recognition needs a much lower learning rate and a much higher epochs for it to be trained and get an acceptabble result. I set learning rate=0.001, and epochs=2000, lambda=0.01 to have this worked out. The result is pretty good, and I'm awesome.</p>
+
+<hr>
+<h2> Discussion </h2>
+<p> 
+<li> Cross validation divides the whole dataset into mini batches and train with round robin, this could better utilize the dataset and reduce bias. This is useful when the dataset has a relatively small size.</li>
+<p><li> Overfitting occurs when the model is too well trained that it fits the train set more than it should be, which makes the trained model a less geenral one. </li>
+1. Cross Validation: Reduce overfitting by splitting the training set into multiple smaller ones and generate an average result.
+<br>2. L2 Regularization: Adding the sum of squared weights to the cost function, so we won't take too many distinct features into account.
+<br>3. Less hidder layer nodes: Too much hidden layer could catch too many unnecessary features, which could potentially make the the model overfit the train data.
+</p>
+<li> The result of this method is acceptable as the TP and TN rates are generally above 0.97.
+<li> Potential future work might involve tunning the learning rate and epochs, adjust hidden layer nodes to acheive a better level of classification.
+</p>
+
+<hr>
+<h2> Conclusions </h2>
+<p>
+Machine Learning is fun! Neural net is mind-blowing magic!
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+<li> My Brain</li>
+<li><a href="https://www.cnblogs.com/charlotte77/p/5629865.html"> Backpropagation</a></li> 
+
+<li><a href="https://blog.csdn.net/liangyihuai/article/details/78811664"> L2 Regularization</a></li>
+<hr>
+</div>
+  </div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>

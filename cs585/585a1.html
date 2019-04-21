@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS585: Image and Video Computing</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="585a1.html">Project 1
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a2.html">Project 2</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a3.html">Project 3</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a4.html">Project 4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">Plate Recognition</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p> 
+ CS 585 HW 1 <br>
+ Xiaoran Xu <br>
+ 9/11/2018
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+  This homework is to take a selfie and using openCV to convert it to a grayscale picture, flip it, and be creative for the 3rd picture.
+  This homework's goal is for us to get familiar with basic opencv programming. The difficulty would be to figure out how to program in 
+  opencv as a new beginner.
+</p>
+
+<hr>
+<h2> Method and Implementation </h2>
+<p>To convert it to a grayscale picture, I used the method taught in class: average each pixel's RGB value.<br>
+  For flipping the picture, I just go through each pixcl from the left and swap the pixel with the corresponding pixel from the right. <br>
+  For the third part where we're supposed to be creative, I did it the similar way as what we did in lab1. The difference is that I change every pixel's rgb value based on which pixel it is, rather than turning all pictures into one channel.
+</p>
+
+<p>
+It's just one or two lines of code, no algorithm used, simple math and simple code.
+</p>
+
+<hr>
+<h2>Experiments</h2>
+<p>
+I played around with picture for a few times just to get familiar with what opencv can do and how to use those functionalities for this homework.</p>
+
+
+<hr>
+<h2> Results</h2>
+Original Image:<br>
+<img src="a1_results/faceColor.jpg" height="400" width="300">
+<p>
+<table>
+<tr><td colspan=3><center><h3>Results</h3></center></td></tr>
+<tr>
+  <td> GrayScale </td> 
+  <td> Flipped </td> 
+  <td> Cube Me </td> 
+</tr> 
+<tr>
+  <td> <img src="a1_results/faceGray.jpg" height="400" width="300"> </td>
+  <td> <img src="a1_results/flipped.jpg" height="400" width="300"> </td>
+  <td> <img src="a1_results/pt3.jpg" height="400" width="300"> </td>
+</tr>
+</table>
+</p>
+
+
+
+<hr>
+<h2> Discussion </h2>
+<ul>
+<li>I believe that these are all basic functions in openCV. The result images are as expected. I hope that I could change pictures in more complex way and make the result pictures look complicated. Now I learn that some picture softwares are no magic, some features are just a few lines of code.</li>
+</ul>
+</p>
+
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+OpenCV is fun! Go CV!
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+
+<li>My Brain
+
+</p>
+<hr>
+</div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>

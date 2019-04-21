@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS585: Image and Video Computing</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="585a1.html">Project 1
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a2.html">Project 2</a>
+          </li>
+          <li class="nav-item  active">
+            <a class="nav-link" href="585a3.html">Project 3</a>
+             <span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a4.html">Project 4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">Plate Recognition</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p>
+ CS 585 HW 3 <br>
+ Xiaoran Xu <br>
+ Ziyang Chen <br>
+    10/9/2018
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+Apply "template matching" technique to recongnize 4 different hand shapes or gestures in real-time. The assumptions are that hands are at appropriate distance to the camera so that it could be detected, and the program will only recongnize static hand shapes that match the templates. One of the forseen difficulty is that the background might be detected as skin color, and arises noises during the recognition.
+</p>
+
+<hr>
+<h2> Method and Implementation </h2>
+<p>1. Template choosing: Take pictures of the 4 hand gestures that will be detected, and extract only the hand and save as templates.<br>
+  2. Skin detection: Use skin color detection to extract the skin part out of the real-time images captured by the camera. <br>
+  3. Noise reduction: Apply an opening to the image to remove some background noises that's similar to skin color. <br>
+  4. Projections: Doing horizontal and vertial projections to create bouding box for potential hand shape areas, and also detect the number of hands in the image.<br>
+  5. Template matching: Convert the templates and the image to binary and calculate their correlation coefficient, then find the one that gives the higher value and take that as the best match.<br>
+  6. Gestures game: Set values to gestures ("good" = 1, "yeah" = 2, "hi" = 5, "skr" = 6) and play a gesture game. Calculate the sum of all the gestures values which present in the frame and output them on the screen.
+</p>
+
+<p>
+templateProcessing: Detect skin color and make other pixels to black.<br>
+matchTemplate: this is an opencv built-in function that was used to calculate correlation coefficient.<br>
+minMaxLoc: Also an opencv built-in function to find the point that has the highest value. <br>
+gesture_game: Detect the value of each gesture which appeared in the frame and calculate the sum of them as a game.
+</p>
+
+<hr>
+<h2>Experiments</h2>
+<p>
+  The template images are show below:
+<table>
+<tbody>
+<tr>
+<td> Hand Shape </td> <td> <center>Template</center></td>
+</tr>
+<tr>
+  <td> <h2>hi</h2></td>
+  <td><center> <img src= "a3_results/hi_template.jpg" height=150></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>yeah</h2></td>
+  <td> <center><img src= "a3_results/yeah_template.jpg" height=150></center></td>
+</tr>
+
+<tr>
+  <td> <h2>good</h2></td>
+  <td><center> <img src= "a3_results/good_template.jpg" height=150> </center></td>
+</tr>
+
+<tr>
+  <td> <h2>skr</h2></td>
+  <td><center> <img src= "a3_results/skr_template.jpg" width="150"></center> </td>
+</tr>
+</tbody></table>
+
+In this experiment, in order to keep the accuracy of the result of hand detection, any skin colors in the background should be took away. Besides, the face of user should also not appear in the screen. We have tested 4 gestures with only one hand, gestures combo(two hands) and 3 rounds gesture games. 
+<hr>
+<h2> Results</h2>
+
+<p>
+<table>
+<tbody>
+<tr>
+<td> Hand Shape </td> <td> <center>Result</center></td>
+</tr>
+<tr>
+  <td> <h2>hi</h2></td>
+  <td><center> <img src= "a3_results/hi.png" height=220></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>yeah</h2></td>
+  <td> <center><img src= "a3_results/yeah.PNG" height=250></center></td>
+</tr>
+
+<tr>
+  <td> <h2>good</h2></td>
+  <td><center> <img src= "a3_results/good.PNG" height=250> </center></td>
+</tr>
+
+<tr>
+  <td> <h2>skr</h2></td>
+  <td><center> <img src= "a3_results/skr.PNG" height=250></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>good & hi</h2></td>
+  <td><center> <img src= "a3_results/2_hands_1.PNG" height=250></center> </td>
+</tr>
+
+
+<tr>
+  <td> <h2>yeah & good</h2></td>
+  <td><center> <img src= "a3_results/2_hands_2.PNG" height=250></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>gesture game: good & good</h2></td>
+  <td><center> <img src= "a3_results/good+good.png" height=250></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>gesture game: hi & yeah</h2></td>
+  <td><center> <img src= "a3_results/hi+yeah.png" height=250></center> </td>
+</tr>
+
+<tr>
+  <td> <h2>gesture game: skr & good </h2></td>
+  <td><center> <img src= "a3_results/skr+good.png" height=250></center> </td>
+</tr>
+
+</tbody></table>
+
+
+</p>
+
+
+Results shown in Confusion Matrix:<br>
+<table border="1">
+<tr><th></th><th> hi </th><th> yeah </th><th> good </th><th> skr </th></tr>
+<tr><th>hi</th><td>5</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><th>yeah</th><td>0</td><td>5</td><td>0</td><td>0</td></tr>
+<tr><th>good</th><td>0</td><td>0</td><td>5</td><td>0</td></tr>
+<tr><th>skr</th><td>1</td><td>1</td><td>2</td><td>5</td></tr>
+<table>
+
+
+<hr>
+<h2> Discussion </h2>
+
+<p>
+Discuss your method and results:
+</p><ul>
+<li>This program could recognize almost all of the hand shapes, but it's limited to background colors. Because it used threshold, and skin-color detection, it could fail when the background is somehow close to skin color in computer vision. This would make the recognition fail to detect or find the wrong match. Because we use only one template image for each hand shape, it's only a template from one angle. It could match to the wrong hand shape if the orentation is too far away from the template angle.</li>
+<li>To further avoid these problems, we need a more sophisticated algorithm to seperate the actual skin part from the skin-color background. Other than this, we could also take multiple template pictures from different angles of the same hand shape.</li>
+</ul>
+<p></p>
+
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+Ths algorithm complete a simple hand gesture detection by using skin detection and template matching. When the angle of hand gesture are similar to that of the templates, it have a accurate detection. However, this algorithm is strict to the background color and hand gesture performance. When the background color contains skin color, the detection results may be influenced. Additionally, if the performance of hand gesture is not suitable (such as angle deviation, shape variation), the gesture detection would have mistakes as a result.<br>
+I think template matching has its limitations, and it works well for static recognition not motion staff detection. We might need better algorithms to detect moving objects.
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+<li><a href="http://docs.opencv.org/2.4/doc/tutorials/imgproc/histograms/template_matching/template_matching.html">Template Matching</a> accessed @ 10/8/2018</li>
+
+</p>
+<hr>
+</div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>

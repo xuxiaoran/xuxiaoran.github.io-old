@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS585: Image and Video Computing</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="585a1.html">Project 1
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="585a2.html">Project 2</a>
+            <span class="sr-only">(current)</span>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a3.html">Project 3</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="585a4.html">Project 4</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">Plate Recognition</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p>
+ CS 585 HW 2 <br>
+ Xiaoran Xu <br>
+ Teammate: <br>
+ Ziyang Chen <br>
+    09/26/2018
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+We were given a dataset of 500 shape images to analyze their background colors, segment each shape blobs by color, find contours and decide the blob shape. For this dataset, each shape blobs have a random unique color. Comparing to the real world of computer vision, this is simpler as colors are more complicated and and shape are more complex in the real world. However, we get to learn the basic techniques that are widely used in computer vision field now. We have observed that each shape blobs have a distinct color, so we assume that when we convert the shape image to grayscale, each shape blobs should remain distinct. The most difficult problem was how we should handle noises. Because of the JPEG format, even though for each shape blobs, the color seems to be different, but when reading it in OPENCV, the BRG values might be different.
+
+
+</p>
+<b>In this problem, we use the original dataset but not the optimal dataset.</b>
+<hr>
+<h2> Method and Implementation </h2>
+<p>
+  <li>Requirement one:  </li>Firstly, noise reduction is essential in this problem. erod() and dilate() function were used to remove the small and inconspicuous noise in the image. In order to label the background pixels and each blob pixels, kmeans would be useful for this problem. K-means is one of the methods to classify data clusters in machine learning area. It needs to define a appropriate K value as K = the amount of blobs. We loop all pixels in the image and find that the amount of each blob's pixel is above hundreds approximately. So a value has been set to judge if this would be a blob's pixel and account the number of blobs. Then kmeans function has been used to classify different blobs and label them with random different colors. In addition, as background will always be the largest blobs, it is simple to find it and color it with white.
+  <li>Requirement two:  </li>As background and each blob has been label in the new image, finding the contour of outermost. N4 Algorithm has been used to compare each pixel and its 4 neighbourhood pixels. If the center pixel is not equal to any of its neighbourhood and that different neighbourhood is a background pixel, the center pixel must on the contour and record it in a vector. After the loop, mark all the pixel which recorded in the vector with black color.
+  <li>Requirement three:</li> As the borders against the background is the contour of outermost which we have done in requirement two, we only need to fix borders against another shape blob and borders that are a border of the whole image. Similarly, N4 algorithm could be used to find all the borders of a blob. When the center of pixel in N4 is different with any of its 4 neighbours, it will be recorded as a border pixel in a vector. To find the borders against another shape blob, we remove the pixels in borders against the background which we have record in requirement two frim the all border pixels vector. Then mark the left pixel in the vector with yellow which represent the borders against other blobs. Finally, find the pixels on four edges in the images and mark them with red color. That would be the border of the whole image.
+  <li>Requirement five: </li>To determine the shape of each shape blobs, we were asked to compare out images with the given annotations. Because we used K-means earlier to segment shape blobs, we already have a labelled image. For each label, it should represent a shape blob. And as we observed, most of the annotations contain only one shape with a black background. Therfore, we decided to create a binary image with every pixel initialized to 0(black). Then, for each label we have, we find all pixels with the same label and change the pixel color to 1(white). Then, we compute the centroid using OPENCV's built-in function. Comparing if the centroid matches any annotation's centroid.
+</p>
+
+<p>
+<li>Functions:</li> Each requirement has it own functions in the coding part.
+<li>Two detect_shape(...) functions: </li>one takes a filename which is used to compute the centroid of a given annotation. The other one takes a Mat, which is a binary image, this was used to computer the centroid of our segmented shape.
+<li>void result(...) automatically computes our detection rate for each shape image. It iterates through each label and create a binary image of a single shape(we hope!) and compare the result with annotations, then compute the hit rate. </li>
+
+</p>
+
+<hr>
+<h2>Experiments</h2>
+<p>
+  Because of the size of the dateset and the time we were given to complete the test, we run our program against 50 randomly selected images.
+</p>
+
+<p>
+
+</p>
+<p>
+The detection rate was computed by: (the number of shape correctly detected)/(the number of annotations). </p>
+<p>
+requirement 1: 83%
+</p>
+<p>
+requirement 2: 83%
+</p>
+<p>
+requirement 3: 73%
+</p>
+<p>
+requirement 5: 63%
+</p>
+
+
+
+
+<hr>
+<h2> Results</h2>
+<p>
+The following images shows the original and result images in this problem:
+</p>
+
+<p>
+<table>
+<tbody><tr><td colspan="3"><center><h3>Results</h3></center></td></tr>
+<tr>
+<td> Trial </td><td> Source Image </td> <td> Requirement 1 Image</td><td> Requirement 2 Image</td><td> Requirement 3 Image</td><td> Requirement 5 Image</td>
+</tr>
+<tr>
+  <td> 1013 </td>
+  <td> <img src="cs585/shapes_train2018/1013.jpeg"> </td>
+  <td><img src="image/1013_K-means.jpg"></td>
+  <td><img src="image/1013Border_with_background.jpg"></td>
+  <td><img src="image/1013Border.jpg"></td>
+  <td> <img src="image/1013_result.jpg"> </td>
+</tr>
+<tr>
+  <td> 1001 </td>
+  <td> <img src="shapes_train2018/1001.jpeg"> </td>
+  <td><img src="image/1001_K-means.jpg"></td>
+  <td><img src="image/1001Border_with_background.jpg"></td>
+  <td><img src="image/1001Border.jpg"></td>
+  <td> <img src="image/1001_result.jpg"> </td>
+</tr>
+<tr>
+  <td> 1051 </td>
+  <td> <img src="cs585/shapes_train2018/1051.jpeg"> </td>
+  <td><img src="image/1022_K-means.jpg"></td>
+  <td><img src="image/1022Border_with_background.jpg"></td>
+  <td><img src="image/1022Border.jpg"></td>
+  <td> <img src="image/1051_result.jpg"> </td>
+</tr>
+</tbody></table>
+</p>
+
+
+
+<hr>
+<h2> Discussion </h2>
+
+<p>
+Discuss your method and results:
+</p><ul>
+<li>We used k-means in the beginning as we believe that it's most suitable to do color detection, especially that most of the colors in the shape images were distinct. We could easily segment each shape blobs. However, this requires us to find a k value that's as precise as possible. We set a filter so that we could ignore small noise, it seemed to work at least. But the noise level differs from image to image, it's hard to set a fixed value for all images. </li>
+<li>As K value for each image is different and difficult to define, the condition of label the blobs and mark the borders are not all perfect. When K value is larger than actual amount of blobs, the results of label blobs and mark border will contain some "noise" point. It is because of the JPEG format. The accuracy of those requirement are influenced by those reasons.</li>
+<li>We believe that our method was generally successful as we can successfully detect a large portion of the shape images. Again, the limitations are the noises come from the JPEG format. </li>
+<li>Because of the format of JPEG, there were too many noises that could mislead in the beginning. Like how we choose k for K-means. We tried using blur, erode & dilation, but none of them yield an ideal result. We should come up with a better way to predict k. Or potentially, we could iterate thru [0, 255] to get a set of binary images, and analyze at which threshold could there be a new shape appears or an existing shape disappears. </li>
+</ul>
+<p></p>
+
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+We had a hard time dealing with the noises, and we believe that this is also one of the major topic for computer vision. In order for our program to detect noises, we need to know an efficient way to detect it first. And we also learnt the strength and weakness of JPEG format and that of PNG format. Nothing's perfect and it's still not an ideal world, this is also the case for computer vision. We hope that in future, we could develope a better algorithm to eliminate those noises.
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+
+The url we used:
+</p>
+<p>
+https://opencv.org
+</p>
+<p>
+https://en.wikipedia.org/wiki/K-means_clustering
+</p>
+
+<p>
+https://docs.opencv.org/3.4/d9/df8/tutorial_root.html
+</p>
+<hr>
+</div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>
