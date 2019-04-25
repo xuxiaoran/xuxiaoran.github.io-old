@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>CS640: Artifical Intelligence</title>
+
+  <link href="../vendor/stuff/css/stuff.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-info static-top">
+    <div class="container">
+      <a class="navbar-brand" href="../index.html">Xiaoran Xu</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="p1.html">Neural Network
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="project.html">News Image Classification</a>
+          </li>
+          <li class="nav-item  active">
+            <a class="nav-link" href="#">Project 3</a>
+            <span class="sr-only">(current)</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+<div class="col-xl-12">
+<br>
+<center>
+<a href="http://www.bu.edu"><img border="0" src="http://www.cs.bu.edu/fac/betke/images/bu-logo.gif"
+width="119" height="120"></a>
+</center>
+
+<h1>Assignment Title</h1>
+<p> 
+ CS 640 Programming assignment 3 <br>
+ Xiaoran Xu <br>
+    4/21/2019 
+</p>
+
+<div class="main-body">
+<hr>
+<h2> Problem Definition </h2>
+<p>
+3D Tic-Tac-Toe: Implementating minimax algorithms with alpha-beta pruning to play 4x4x4 tic-tac-toe. The project would need comprehensive understanding of minimax, alpha-beta pruning, and the rules for the 4x4x4 tic-tac-toe. The assumption I need to make is that the result of the game does not depend on the order of the player, namely, the game is expected to be a fair game. The anticipated difficulty would be figuring out a way to calculate the heuristic value so that in the alpha-beta pruning process, it could be efficient and meaningful.
+</p>
+
+<hr>
+<h2> Method and Implementation </h2>
+<p>
+<img src="p3_results/algorithm.jpg">
+<br>(source: https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning)
+</p>
+<p>
+  To use the alphabeta algorithm, I treat each state of the game as a node, which is just the current board. Each child node is defined as all the valid moves on the board, which are the positions that haven't been marked by any player. The terminal node is the end game, and per tic-tac-toe rules, it means that one of the players has successfully marked all the positions on a wining line.
+<br><br>There is a total of 76 wining lines for the game: for each horizontal plane, there is a total of (4+4+2)*4 = 40 lines, and for the vertical planes, there is a total of 4*4+8*2 = 32 lines. Lastly, the diagonals of the whole contribute 4 winning lines for the game.
+<br><br> In general, my implementation translates the pseudocode into Java as project required. My AI always see itself as the maximizing player, and the opponent as the minimizing player. As for calculating the heuristic values, I define a list to store the values. And the index is calculated as 5*(my marks in a line)+1*(opponent's marks in a line). Also, I assign -1, -100, -10000, -1000000, 10, 100, 10000, and 1000000 to the list when opponent has 1, 2, 3, or 4 or when I have 1, 2, 3, or 4 marks on a winning line respectively. This way, I could make sure that my AI will intervene when there is still a chance to prevent the opponent from winning, and that my AI will always choose the move that will likely win because it will result in a higher score. The heuristic values for all other cases which means the positions on a winning line are marked by both players, so there is no point to assign values as the line is useless to both player, and therefore, can be ignored.
+</p>
+<h3> Code Outline </h3>
+<p>
+1. minimax(boolean myTurn, int depth, int alpha, int beta): this function runs recuresively to carry out the key steps described as the pseudocode above.
+<br> 2. evaluation(): this function will calculate the overall score of the whole board after making an attempt move just to evaluate the score of this move.
+<br> 3. possibleMoves(): this will generate a list of valid moves given current state of the game, and will be used in minimax.
+</p>
+
+<hr>
+<h2>Experiments</h2>
+<p>
+A random player is given in the skeleton code. My AI was tested by playing against this random player first for 100 rounds with 2, 3, and 4 level lookahead. Then the AI with different level of lookahead played against each other for 100 rounds.
+
+</p>
+<p>
+The evaluation is simply the number of games each player wins. </p>
+
+<hr>
+<h2> Results</h2>
+<p>
+<table border="1">
+<tbody><tr><td colspan="4" align="center"><center><h3>Results</h3></center></td></tr>
+<tr>
+<td> Player 1 </td><td> Player 2 </td> <td> P1 wins : P2 wins</td> <td> P1 Avg. Decision Time</td> 
+</tr>
+<tr>
+  <td> 2-level lookahead </td> 
+  <td> Random</td> 
+  <td> 100:0 </td>
+  <td> 0.0ms </td>
+</tr> 
+<tr>
+  <td> 3-level lookahead </td> 
+  <td> Random</td> 
+  <td> 100:0 </td>
+  <td> 0.0ms </td>
+</tr> 
+<tr>
+  <td> 4-level lookahead </td> 
+  <td> Random</td> 
+  <td> 100:0 </td>
+  <td> 0.0ms </td>
+</tr> 
+<tr>
+  <td> 4-level lookahead </td> 
+  <td> 3-level lookahead </td> 
+  <td> 100:0 </td>
+  <td> 0.083ms </td>
+</tr> 
+<tr>
+  <td> 4-level lookahead </td> 
+  <td> 2-level lookahead </td> 
+  <td> 70:30 </td>
+  <td> 0.0ms </td>
+</tr> 
+<tr>
+  <td> 3-level lookahead </td> 
+  <td> 2-level lookahead </td> 
+  <td> 88:12 </td>
+  <td> 0.125ms </td>
+</tr> 
+</tbody></table>
+</p>
+
+
+
+<hr>
+<h2> Discussion </h2>
+<p>
+The algorithm works pretty well as more level of lookahead generates better result as expected. Although as the level of lookahead get more, the time it takes to make a decision gets longer. This is because the algorithm doesn't have any data structure optimization as the player could simply keep an internal state of the game and store more information like which winning line accross a certain position, this would speed up the process.
+<br><br> The interesting thing is that the time of each game gets longer when the level of lookahead between two players differ more. I guess this is because with less level lookahead, the player become unpredictable to the high level player, and this would requires more of alpha-beta pruning process to get an accurate result.
+</p>
+
+<h3> Detail Breakdown of a game between the 4-level lookahead and the 3-level lookahead players</h3>
+<p>
+  X: 4-level player  O: 3-level player
+  <br> Analyze from the persepective of the 4-level player
+<br>
+<img src="p3_results/move1.png" height="350">
+<img src="p3_results/move2.png" height="350">
+<img src="p3_results/move3.png" height="350">
+<img src="p3_results/move4.png" height="350">
+<img src="p3_results/move5.png" height="350">
+<img src="p3_results/move6.png" height="350">
+<br>move2: X player tries to build the diagonal line on the plane parallel to the sides
+<br>move3: X player tries to build a horizontal line
+<br>move4: O player almost got a vertical line on the upper corner. X player intervened by marked (0,0,2)
+<br>move5: X player continues to build the horizontal line started in move3
+<br>move6: O player intervenes the line, and X player tries a new line on level 2 
+<br><img src="p3_results/move7.png" height="350">
+<img src="p3_results/move8.png" height="350">
+<img src="p3_results/move9.png" height="350">
+<img src="p3_results/move10.png" height="350">
+<img src="p3_results/move11.png" height="350">
+<img src="p3_results/move12.png" height="350">
+<br>move7: X finds out that O has 3 marks on a winning line on level 3, intervene
+<br>move8: O has another winning line with only its 3 marks, X intervene again
+<br>move9: why does O have so many winning lines?? Again, another on level 3, X intervene
+<br>move10: nothing to say, they play their own game
+<br>move11: O has another winning line which is the diagonal line on level 3, X must intervene. Notice there are also 2 potential winning lines on level three, vertical 3 and horizontal 1. 
+<br>move12: As expected, there is nothing X can do.
+<br><img src="p3_results/end.png" height="350">
+</p>
+
+<p> The calculate of heuristic value still requires future work.</p>
+<hr>
+<h2> Conclusions </h2>
+
+<p>
+For this assignemnt, my implementation of the minimax algorithm with alpha-beta prunning acheives its basic functionality as it dominates the random player. However, this is certainly not enough. This is still fun, and again, AI beats human. I haven't won once when playing with my 5 level lookahead AI. Sad. I can't beat my own creation. Does that make me smart or not?
+</p>
+
+
+<hr>
+<h2> Credits and Bibliography </h2>
+<p>
+<li><a href="https://en.wikipedia.org/wiki/Alpha%E2%80%93beta_pruning"> Minimax with alpha-beta pruning</a></li> 
+</p>
+<hr>
+</div>
+
+  <script src="vendor/jquery/jquery.min.js"></script>
+  <script src="vendor/stuff/js/stuff.bundle.min.js"></script>
+
+</body>
+
+</html>
